@@ -1,108 +1,191 @@
 <html>
  <head>
-    <title>Reaction Timer</title>
-    <style type="text/css">
-        body{
-            
-            font-family: cursive;        }
-        #shape{
-            
-            width:200px;
-            height:200px;
-            background-color: red;
-            display:none;
-            position:relative;
-        }
+    <title>JQuery UI</title>
     
-        </style>
+     <script type="text/javascript" src="jquery.min.js"></script>
+    
+     
+     
+     <style type="text/css">
+         body{
+             
+             font-family: sans-serif;
+             padding: 0px;
+             margin: 0px;
+             
+         }
+         #header{
+             
+             width: 100%;
+             background-color: #EEEEEE;
+             padding: 5px;
+             height: 29px;
+             
+         }
+         #logo{
+             
+             float: left;
+             font-weight: bold;
+             font-size: 120%;
+             padding: 3px 5px;
+         }
+         #buttonContainer{
+             
+             width: 229px;
+             margin: 0 auto;
+         }
+         .toggleButton{
+             
+             float: left;
+             
+             border: 1px solid grey;
+             
+             padding: 6px;
+             
+             border-right: none;
+             
+             font-size: 90%;
+            
+         }
+         #html
+         {
+             border-top-left-radius: 4px;
+             border-bottom-left-radius: 4px;
+         }
+         #output{
+             
+             border-top-right-radius: 4px;
+             border-bottom-right-radius: 4px;
+             border-right: 1px solid grey;
+         }
+         .active{
+             
+             background-color: #F5F9FF;
+             
+         }
+         .highlightedButton{
+             
+             background-color: grey;
+         }
+         textarea{
+             width: 50%;
+             resize: none;
+             border-top: none;
+             border-top-color: grey;
+         }
+         .panel{
+             float: left;
+             width: 50%;
+             border-left: none;
+         }
+         iframe{
+             border: none;
+         }
+         .hidden{
+             display: none;
+         }
+         #watermark{
+             position: fixed;
+             opacity: 0.5;
+             z-index: 99;
+             color: black;
+             bottom: 50%;
+             right: 50%;
+             height: 75px
+             width: 75px;
+             
+         }
+     </style>
+     
  </head>
 <body>
-    <h1>Test your Reactions!</h1>
     
-    <p>click on shapes as quickly as you can!</p>
+    <div id="watermark">Code Tester</div>
     
-    <p>Your time:<span id="timeTaken"></span></p>
+    <div id="header">
+        
+    <div id="logo">
+        
+        CodePlayer
+        
+    </div>
+    <div id="buttonContainer">
+        
+        <div class="toggleButton active" id="html">HTML</div>
+        
+        <div class="toggleButton" id="css">CSS</div>
+        
+        <div class="toggleButton" id="javascript">Javascript</div>
+        
+        <div class="toggleButton active" id="output">Output</div>
+        
+        
+        </div>
+        
     
-    <div id="shape"></div>
+    </div>
+    <div id="bodyContainer">
+    
+        <textarea id="htmlPanel" class="panel"><p>Hello world</p></textarea>
+        
+         <textarea id="cssPanel" class="panel hidden">p{color:green;}</textarea>
+        
+         <textarea id="javascriptPanel" class="panel hidden"></textarea>
+        
+        <iframe id="outputPanel" class="panel"></iframe>
+        
+    
+    </div>
+    
     
     <script type="text/javascript">
         
-        var start=new Date().getTime();
+        function updateOutput(){
+            
+            $("iframe").contents().find("html").html("<html><head><style type='text/css'>" + $("#cssPanel").val() +"</style></head><body>"+$("#htmlPanel").val() +"</body></html>" );
         
-        function getRandomColor(){
-            
-            var letters='0123456789ABCDEF'.split('');
-            
-            var color="#";
-            
-            for(var i= 0;i< 6;i++)
-                {
-                    color += letters[Math.floor(Math.random()*16)];
-                }
-            return color;
-        }
+            document.getElementById("outputPanel").contentWindow.eval($("#javascriptPanel").val());
         
-        function makeShapeAppear(){
             
-            var top= Math.random()* 400;
-            
-            var left=Math.random()*400;
-            
-            var width=(Math.random()*200)+100;
-            
-            if(Math.random() > 0.5)
-                {
-                    
-                    document.getElementById("shape").style.borderRadius="50%" ;
-                }
-            else{
-                
-                document.getElementById("shape").style.borderRadius="0px";
-            }
-            
-            document.getElementById("shape").style.backgroundColor=getRandomColor();
-            
-            document.getElementById("shape").style.height=width + "px";
-            
-             document.getElementById("shape").style.width=width + "px";
-            
-            document.getElementById("shape").style.left=left + "px";
-            
-            document.getElementById("shape").style.top= top + "px";
-            
-            document.getElementById("shape").style.display="block";
-            
-            start=new Date().getTime();
-        }
-         function appearAfterDelay(){
-        
-        setTimeout(makeShapeAppear,Math.random()* 2000);
-        
-         }
-        
-        appearAfterDelay();
-        
-        document.getElementById("shape").onclick=function(){
-            
-            document.getElementById("shape").style.display="none";
-            
-            var end =new Date().getTime();
-            
-            var timeTaken = (end - start)/1000;
-            
-            document.getElementById("timeTaken").innerHTML = 
-            timeTaken+"s";
-        
-            appearAfterDelay();
             
         }
         
+        $(".toggleButton").hover(function() {
+            
+            $(this).addClass("highlightedButton");
+        },function(){
+            
+            $(this).removeClass("highlightedButton");
+        });
         
+        $(".toggleButton").click(function(){
+            
+            $(this).toggleClass("active");
+          
+            $(this).removeClass("highlightedButton");
+            
+            var panelId=$(this).attr("id")+"Panel";
+         
+            $("#" +panelId).toggleClass("hidden");
+            
+            var numberofActivePanels =4 - $('.hidden').length;
+            
+             $(".panel").width(($(window).width() /numberofActivePanels)-10);
+            
+            
+        })
+        $(".panel").height($(window).height()-$("#header").height()-15);
         
-        </script>
+        $(".panel").width(($(window).width() /2)-10);
+        
+       updateOutput();
+        
+        $("textarea").on('change keyup paste', function() {
     
-    
-    
-    
+         updateOutput();
+            
+        });
+        
+    </script>
 </body>
 </html>
