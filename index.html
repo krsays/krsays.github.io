@@ -1,190 +1,247 @@
+<!DOCTYPE html>
 <html>
- <head>
-    <title>JQuery UI</title>
-    
-    
-     
-     
-     <style type="text/css">
-         body{
-             
-             font-family: sans-serif;
-             padding: 0px;
-             margin: 0px;
-             
-         }
-         #header{
-             
-             width: 100%;
-             background-color: #EEEEEE;
-             padding: 5px;
-             height: 29px;
-             
-         }
-         #logo{
-             
-             float: left;
-             font-weight: bold;
-             font-size: 120%;
-             padding: 3px 5px;
-         }
-         #buttonContainer{
-             
-             width: 229px;
-             margin: 0 auto;
-         }
-         .toggleButton{
-             
-             float: left;
-             
-             border: 1px solid grey;
-             
-             padding: 6px;
-             
-             border-right: none;
-             
-             font-size: 90%;
-            
-         }
-         #html
-         {
-             border-top-left-radius: 4px;
-             border-bottom-left-radius: 4px;
-         }
-         #output{
-             
-             border-top-right-radius: 4px;
-             border-bottom-right-radius: 4px;
-             border-right: 1px solid grey;
-         }
-         .active{
-             
-             background-color: #F5F9FF;
-             
-         }
-         .highlightedButton{
-             
-             background-color: grey;
-         }
-         textarea{
-             width: 50%;
-             resize: none;
-             border-top: none;
-             border-top-color: grey;
-         }
-         .panel{
-             float: left;
-             width: 50%;
-             border-left: none;
-         }
-         iframe{
-             border: none;
-         }
-         .hidden{
-             display: none;
-         }
-         #watermark{
-             position: fixed;
-             opacity: 0.5;
-             z-index: 99;
-             color: black;
-             bottom: 50%;
-             right: 50%;
-             height: 75px
-             width: 75px;
-             
-         }
-     </style>
-     
- </head>
+
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="materialize.min.css" media="screen,projection" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
 <body>
-    
-    <div id="watermark">Code Tester</div>
-    
-    <div id="header">
-        
-    <div id="logo">
-        
-        CodePlayer
-        
+    <div class="parallax-container">
+        <div class="parallax"><img src="BG.png"></div>
     </div>
-    <div id="buttonContainer">
-        
-        <div class="toggleButton active" id="html">HTML</div>
-        
-        <div class="toggleButton" id="css">CSS</div>
-        
-        <div class="toggleButton" id="javascript">Javascript</div>
-        
-        <div class="toggleButton active" id="output">Output</div>
-        
-        
+    <div class="section white">
+
+        <div class="row container">
+
+            <h2 class="header">Convert Wav file to MIDI File</h2>
+            <p class="grey-text text-darken-3 lighten-3">
+                Convert wav file into midi file with 65.76% accuracy*
+                <br><br>
+                *Best case, 26.83% otherwise
+            </p>
+            <form id="fileUpload" action="#">
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span>Click to Select WAV file</span>
+                        <input type="file" id="uploadFile" accept=".mp3,.wav,audio/*">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                    </div>
+                </div>
+                      <div class="row">
+                        <div class="input-field col s12">
+                          <i class="material-icons prefix">public</i>
+                          <input id="uploadURL" type="text" class="validate">
+                          <label for="icon_prefix">URL of the wav file</label>
+                        </div>
+                      </div>
+                    
+                <button class="btn waves-effect waves-light btn-large" type="submit" name="action"
+                    style="width: 100%;">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+            </form>
+
+
+
+            <div class="container">
+                <div class="preloader-wrapper big" id="Loader">
+                    <div class="spinner-layer spinner-blue">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div hidden id="Ready2Download" style="width: 100%;">
+                <a class="waves-effect waves-light btn-large" style="width: 100%;" id="Ready2Download_Link"><i
+                        class="material-icons right">arrow_downward</i>Download</a>
+
+            </div>
+            <a id="Ready2Download_Text" hidden></a>
+
+
         </div>
-        
-    
+        <div class="row container">
+            <center>
+
+                <img src="convert.png">
+        </div>
+        </center>
     </div>
-    <div id="bodyContainer">
-    
-        <textarea id="htmlPanel" class="panel"><p>Hello world</p></textarea>
-        
-         <textarea id="cssPanel" class="panel hidden">p{color:green;}</textarea>
-        
-         <textarea id="javascriptPanel" class="panel hidden"></textarea>
-        
-        <iframe id="outputPanel" class="panel"></iframe>
-        
-    
+
     </div>
-    
-    
-    <script type="text/javascript">
-        
-        function updateOutput(){
-            
-            $("iframe").contents().find("html").html("<html><head><style type='text/css'>" + $("#cssPanel").val() +"</style></head><body>"+$("#htmlPanel").val() +"</body></html>" );
-        
-            document.getElementById("outputPanel").contentWindow.eval($("#javascriptPanel").val());
-        
-            
-            
+
+    <div class="parallax-container">
+        <div class="parallax"><img src="Footer.jpg" width="50px"></div>
+    </div>
+
+
+    <!--JavaScript at end of body for optimized loading-->
+    <script type="text/javascript" src="materialize.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            document.getElementById('Loader').classList.remove('active');
+
+            $('.parallax').parallax();
+        });
+
+        const form = document.getElementById('fileUpload');
+
+        function uid() {
+            var result = '';
+            for (var i = 0; i < 32; i++)
+                result += Math.floor(Math.random() * 16).toString(16).toUpperCase
+                    ();
+            return result
         }
-        
-        $(".toggleButton").hover(function() {
-            
-            $(this).addClass("highlightedButton");
-        },function(){
-            
-            $(this).removeClass("highlightedButton");
+
+
+        form.addEventListener('submit', (event) => {
+
+            if(document.getElementById('uploadFile').value!="" || document.getElementById('uploadURL').value!="") {
+                console.log("Okay, now")
+                if(document.getElementById('uploadFile').value!="") {
+                    document.getElementById('uploadURL').value=""
+                }
+
+            }
+
+            else {
+                alert("Please either Upload a file or enter the URL for the file")
+                exit;
+            }
+
+
+            document.getElementById('Ready2Download').hidden = true;
+            document.getElementById('Loader').classList.add('active');
+            console.log("Here now");
+            var uuid = uid();
+            var settings = {
+                "url": "https://xuwlgmksicpkogmgiwvn.supabase.co/storage/v1/object/mp3-files/",
+                "method": "POST",
+                "mode": "no-cors",
+                "timeout": 0,
+                "headers": {
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh1d2xnbWtzaWNwa29nbWdpd3ZuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY1MzY4NjYyMywiZXhwIjoxOTY5MjYyNjIzfQ.TrWoK7TB1mEWDkNWwXjHOY8c-a-Kn8cd6lnU_5dkOp8",
+                    "Content-Type": "audio/mpeg",
+                    "Access-Control-Request-Headers": "x-requested-with",
+                    "Access-Control-Allow-Origin" : "x-requested-with",
+                    "Access-Control-Allow-Methods" : "POST",
+                    "Access-Control-Allow-Headers" : "accept, content-type"
+                    //"Access-Control-Allow-Origin": "http://127.0.0.1:5500/"
+                },
+                "data": "<file contents here>",
+                "processData": false,
+            };
+            settings.url = settings.url + uuid + ".mp3";
+            settings.data = document.getElementById('uploadFile').files[0];
+
+            console.log(settings);
+            document.getElementById('Loader').classList.add('active');
+            $.ajax(settings).done(function (response) {
+                document.getElementById('Loader').classList.add('active');
+                console.log(response.Key);
+                let URL = 'https://xuwlgmksicpkogmgiwvn.supabase.co/storage/v1/object/public/' + response.Key;
+                if(document.getElementById('uploadURL').value!="") {
+                    URL = document.getElementById('uploadURL').value
+                }
+                // From supabase
+                var settings = {
+                    "url": "https://cts.ofoct.com/upload_from_url.php?url=" + URL + "&input_format=WAV,%20MP3,%20OGG,%20AAC,%20WMA",
+                    "method": "POST",
+                    "timeout": 0,
+                    "headers": {
+                        "Content-Type": "audio/mpeg",
+                    }
+                };
+                document.getElementById('Loader').classList.add('active');
+                $.ajax(settings).done(function (response) {
+                    document.getElementById('Loader').classList.add('active');
+                    console.log(response);
+                    let fileName4Next = response.split("|")[2];
+                    console.log(fileName4Next);
+                    var settings = {
+                        "url": "https://cts.ofoct.com/convert-file_v2.php?cid=audio2midi&output=MID&tmpfpath=" + fileName4Next + "&row=file1&sourcename=furelisemp3&&rowid=file1",
+                        "method": "GET",
+                        "timeout": 0,
+                        "headers": {
+                            "Access-Control-Allow-Origin" : "x-requested-with",
+                            "Access-Control-Allow-Methods" : "POST",
+                            "Access-Control-Allow-Headers" : "accept, content-type"
+                            //"Access-Control-Allow-Origin": "http://127.0.0.1:5500/"
+                            // "Cookie": "PHPSESSID=9j2lqq3jerlvnt1k2hgg9nq527"
+                        },
+                    };
+                    document.getElementById('Loader').classList.add('active');
+                    $.ajax(settings).done(function (response) {
+                        document.getElementById('Loader').classList.add('active');
+                        console.log(response);
+                        let tempFileName = response.split("|")[2];
+
+
+                        let Ready2Download = document.getElementById('Ready2Download');
+                        Ready2Download.hidden = false;
+
+                        Ready2Download_Link = document.getElementById('Ready2Download_Link');
+                        Ready2Download_Link.href = "https://cts.ofoct.com/get-file.php?type=get&genfpath=" + tempFileName + "&downloadsavename=" + tempFileName;
+                        // let Ready2Download_Text = document.getElementById('Ready2Download_Text');
+                        // Ready2Download_Text.innerHTML = tempFileName;
+                        document.getElementById('Loader').classList.remove('active');
+                        // alert("File Ready to Download");
+                    });
+
+                });
+
+
+            });
         });
-        
-        $(".toggleButton").click(function(){
-            
-            $(this).toggleClass("active");
-          
-            $(this).removeClass("highlightedButton");
-            
-            var panelId=$(this).attr("id")+"Panel";
-         
-            $("#" +panelId).toggleClass("hidden");
-            
-            var numberofActivePanels =4 - $('.hidden').length;
-            
-             $(".panel").width(($(window).width() /numberofActivePanels)-10);
-            
-            
-        })
-        $(".panel").height($(window).height()-$("#header").height()-15);
-        
-        $(".panel").width(($(window).width() /2)-10);
-        
-       updateOutput();
-        
-        $("textarea").on('change keyup paste', function() {
-    
-         updateOutput();
-            
-        });
-        
+
+        function Click2Download() {
+            let Ready2Download_Text = document.getElementById('Ready2Download_Text');
+            let tempFileName = Ready2Download_Text.innerHTML;
+            console.log(tempFileName);
+            var settings = {
+                "url": "https://cts.ofoct.com/get-file.php?type=get&genfpath=" + tempFileName + "&downloadsavename=test.mid",
+                "method": "GET",
+                "mode" : "no-cors",
+                "timeout": 0,
+                "headers": {
+                    // "Cookie": "PHPSESSID=2flheu9jn3tra6v6vbkrcj1di5"
+                    "Access-Control-Allow-Origin" : "x-requested-with",
+                    "Access-Control-Allow-Methods" : "POST",
+                    "Access-Control-Allow-Headers" : "accept, content-type"
+                    //"Access-Control-Allow-Origin": "http://127.0.0.1:5500/"
+                },
+            };
+
+            $.ajax(settings).done(function (response) {
+                var link = document.createElement("a");
+                link.setAttribute('download', name);
+                link.href = uri;
+                document.body.appendChild(response);
+                link.click();
+                link.remove();
+                console.log(response);
+            });
+        }
+
     </script>
 </body>
+
 </html>
